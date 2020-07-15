@@ -2,6 +2,7 @@ package com.project.diary.mapper;
 
 import com.project.diary.dto.User;
 import com.project.diary.model.SignUpReq;
+import com.project.diary.model.UserModifyReq;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -44,9 +45,9 @@ public interface UserMapper {
     @Select("select * from user order by user_idx")
     List<User> userList ();
 
-    //회원 정보 수정
-    @Update("update user set user_name=#{signUpReq.user_name}, user_nickname=#{signUpReq.user_nickname}, user_phone=#{signUpReq.user_phone} where user_idx=#{user_idx}")
-    void update(@Param("signUpReq") final SignUpReq signUpReq, @Param("user_idx") final int user_idx);
+    //회원 정보 변경
+    @Update("update user set user_name=#{userModifyReq.user_name}, user_nickname=#{userModifyReq.user_nickname}, user_phone=#{userModifyReq.user_phone} where user_idx=#{user_idx}")
+    void update(@Param("userModifyReq") final UserModifyReq userModifyReq, @Param("user_idx") final int user_idx);
 
     //회원 비밀번호 변경
     @Update("update user set user_password=#{user_password} where user_idx=#{user_idx}")
