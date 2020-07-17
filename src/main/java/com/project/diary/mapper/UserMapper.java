@@ -21,7 +21,7 @@ public interface UserMapper {
     @Select("select count(*) form user where user_email=#{user_email}")
     int checkEmail (@Param("user_email") final String user_email);
 
-    //로그인 (반환 값이 없으면 비회원, 0:회원, 1:탈퇴 회원, 2:관리자)
+    //로그인 (반환 값이 없으면 비회원, 0:회원, 1:탈퇴회원, 2:관리자)
     @Select("select user_status from user where user_email=#{user_email} and user_password=#{user_password}")
     int login (@Param("user_email") final String user_email, @Param("user_password") final String user_password);
 
@@ -54,6 +54,6 @@ public interface UserMapper {
     void updatePass(@Param("user_password") final String user_password, @Param("user_idx") final int user_idx);
 
     //회원 탈퇴
-    @Update("update user set user_status=2 where user_idx=#{user_idx}")
+    @Update("update user set user_status=1 where user_idx=#{user_idx}")
     void delete(@Param("user_idx") final int user_idx);
 }
