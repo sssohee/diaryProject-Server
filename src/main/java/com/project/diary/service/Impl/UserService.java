@@ -68,11 +68,25 @@ public class UserService implements UserServiceInter {
         }
     }
 
-    //회원 조회
+    //회원의 정보 조회
     @Override
     public DefaultResponse getData(int user_idx) {
         try {
             final User user = userMapper.userGetData(user_idx);
+            if(user != null)
+                return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS);
+            else
+                return DefaultResponse.res(Status.NOT_FOUND,Message.FIND_USER_FAIL);
+        }catch (Exception e){
+            return DefaultResponse.res(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //회원 list
+    @Override
+    public DefaultResponse userList() {
+        try {
+            final List<User> user = userMapper.userList();
             if(user != null)
                 return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS);
             else
