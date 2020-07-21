@@ -74,7 +74,7 @@ public class UserService implements UserServiceInter {
         try {
             final User user = userMapper.userGetData(user_idx);
             if(user != null)
-                return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS);
+                return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS,user);
             else
                 return DefaultResponse.res(Status.NOT_FOUND,Message.FIND_USER_FAIL);
         }catch (Exception e){
@@ -86,9 +86,9 @@ public class UserService implements UserServiceInter {
     @Override
     public DefaultResponse userList() {
         try {
-            final List<User> user = userMapper.userList();
-            if(user != null)
-                return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS);
+            final List<User> userList = userMapper.userList();
+            if(userList != null)
+                return DefaultResponse.res(Status.OK,Message.FIND_USER_SUCCESS,userList);
             else
                 return DefaultResponse.res(Status.NOT_FOUND,Message.FIND_USER_FAIL);
         }catch (Exception e){
