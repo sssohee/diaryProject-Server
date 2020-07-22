@@ -23,10 +23,23 @@ public class UserService implements UserServiceInter {
             // 빈칸 검사
             if(signUpReq.getUser_name().isEmpty() || signUpReq.getUser_nickname().isEmpty() || signUpReq.getUser_email().isEmpty()||
                     signUpReq.getUser_password().isEmpty()||signUpReq.getUser_phone().isEmpty()) {
-                return DefaultResponse.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             }
-            userMapper.insert(signUpReq);
-            return DefaultResponse.res(Status.CREATED, Message.SIGN_UP_SUCCESS);
+
+            if(userMapper.checkNickName(signUpReq.getUser_nickname())!=0) {
+                return DefaultResponse.res(Status.BAD_REQUEST, Message.NICK_DUPLICATION);
+            }else if(userMapper.checkEmail(signUpReq.getUser_email())!=0){
+                if(userMapper.getUserStatus(signUpReq.getUser_email())==1)
+                    return DefaultResponse.res(Status.BAD_REQUEST,Message.EMAIL_WITHDRAWAL);
+                else
+                    return DefaultResponse.res(Status.BAD_REQUEST,Message.EMAIL_DUPLICATION);
+            }else{
+                userMapper.insert(signUpReq);
+                if(userMapper.getUserIdx(signUpReq.getUser_email())>0)
+                    return DefaultResponse.res(Status.CREATED, Message.SIGN_UP_SUCCESS);
+                else
+                    return DefaultResponse.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
+            }
         }catch (Exception e){
             return DefaultResponse.res(Status.DB_ERROR, Message.DB_ERROR);
         }
@@ -36,7 +49,7 @@ public class UserService implements UserServiceInter {
     @Override
     public DefaultResponse checkNickName(String user_nickname) {
         try {
-            if(userMapper.checkNickName(user_nickname)!=0)
+            if(userMapper.checkNickName(user_nickname)>0)
                 return DefaultResponse.res(Status.BAD_REQUEST,Message.NICK_DUPLICATION);
             else if(userMapper.checkNickName(user_nickname)==0)
                 return DefaultResponse.res(Status.OK,Message.CHECK_SUCCESS);
@@ -54,14 +67,11 @@ public class UserService implements UserServiceInter {
             if(userMapper.checkEmail(user_email)==0)
                 return DefaultResponse.res(Status.OK,Message.CHECK_SUCCESS);
             else if(userMapper.checkEmail(user_email)!=0){
-                int idx = userMapper.getUserIdx(user_email);
-                int status = userMapper.userGetData(idx).getUser_status();
-                if(status==2)
+                if(userMapper.getUserStatus(user_email)==1)
                     return DefaultResponse.res(Status.BAD_REQUEST,Message.EMAIL_WITHDRAWAL);
                 else
                     return DefaultResponse.res(Status.BAD_REQUEST,Message.EMAIL_DUPLICATION);
-            }
-            else
+            }else
                 return DefaultResponse.res(Status.NO_CONTENT,Message.NO_CONTENT);
         }catch (Exception e){
             return DefaultResponse.res(Status.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR);
@@ -102,10 +112,20 @@ public class UserService implements UserServiceInter {
         try {
             // 빈칸 검사
             if(userModifyReq.getUser_name().isEmpty() || userModifyReq.getUser_nickname().isEmpty() ||userModifyReq.getUser_phone().isEmpty()) {
-                return DefaultResponse.res(Status.BAD_REQUEST, Message.MODIFY_USER_FAIL);
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             }
-            userMapper.update(userModifyReq,user_idx);
-            return DefaultResponse.res(Status.OK, Message.MODIFY_USER_SUCCESS);
+
+            if(userMapper.checkNickName(userModifyReq.getUser_nickname())!=0) {
+                return DefaultResponse.res(Status.BAD_REQUEST, Message.NICK_DUPLICATION);
+            }else{
+                userMapper.update(userModifyReq,user_idx);
+                if(userMapper.userGetData(user_idx).getUser_name().equals(userModifyReq.getUser_name())&&
+                        userMapper.userGetData(user_idx).getUser_nickname().equals(userModifyReq.getUser_nickname())&&
+                            userMapper.userGetData(user_idx).getUser_phone().equals(userModifyReq.getUser_phone()))
+                    return DefaultResponse.res(Status.OK, Message.MODIFY_USER_SUCCESS);
+                else
+                    return DefaultResponse.res(Status.BAD_REQUEST, Message.MODIFY_USER_FAIL);
+            }
         }catch (Exception e){
             return DefaultResponse.res(Status.DB_ERROR, Message.DB_ERROR);
         }
@@ -117,10 +137,13 @@ public class UserService implements UserServiceInter {
         try {
             // 빈칸 검사
             if(user_password.isEmpty()) {
-                return DefaultResponse.res(Status.BAD_REQUEST, Message.MODIFY_USER_PASSWORD_FAIL);
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             }
             userMapper.updatePass(user_password,user_idx);
-            return DefaultResponse.res(Status.OK, Message.MODIFY_USER_PASSWORD_SUCCESS);
+            if(userMapper.userGetData(user_idx).getUser_password().equals(user_password))
+                return DefaultResponse.res(Status.OK, Message.MODIFY_USER_PASSWORD_SUCCESS);
+            else
+                return DefaultResponse.res(Status.BAD_REQUEST, Message.MODIFY_USER_PASSWORD_FAIL);
         }catch (Exception e){
             return DefaultResponse.res(Status.DB_ERROR, Message.DB_ERROR);
         }
@@ -131,10 +154,10 @@ public class UserService implements UserServiceInter {
     public DefaultResponse deleteUser(int user_idx) {
         try {
             userMapper.delete(user_idx);
-            if(userMapper.userGetData(user_idx).getUser_status()!=1){
+            if(userMapper.userGetData(user_idx).getUser_status()==1)
+                return DefaultResponse.res(Status.OK, Message.DELETE_USER_SUCCESS);
+            else
                 return DefaultResponse.res(Status.BAD_REQUEST, Message.DELETE_USER_FAIL);
-            }
-            return DefaultResponse.res(Status.OK, Message.DELETE_USER_SUCCESS);
         }catch (Exception e){
             return DefaultResponse.res(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
         }
