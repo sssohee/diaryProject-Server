@@ -54,6 +54,11 @@ public interface UserMapper {
     void updatePass(@Param("user_password") final String user_password, @Param("user_idx") final int user_idx);
 
     //회원 탈퇴
-    @Update("update user set user_status=1 where user_idx=#{user_idx}")
+    @Update("update user set user_nickname='' and user_status=1 where user_idx=#{user_idx}")
     void delete(@Param("user_idx") final int user_idx);
+
+    //회원 email로 status 조회
+    @Select("select user_status from user where user_email={user_email}")
+    int getUserStatus (@Param("user_email") final String user_email);
+
 }
