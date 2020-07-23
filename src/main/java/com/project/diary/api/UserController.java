@@ -19,14 +19,14 @@ public class UserController {
 
     private static final DefaultResponse NO_CONTENT_RES = new DefaultResponse(Status.BAD_REQUEST, Message.NO_CONTENT);
     private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
-    
+
     public UserController(UserServiceInter userService) {
         this.userService = userService;
     }
 
     //회원 가입
     @PostMapping("")
-    public ResponseEntity signUp(SignUpReq signUpReq) {
+    public ResponseEntity signUp(@RequestBody SignUpReq signUpReq) {
         try {
             return new ResponseEntity(userService.saveUser(signUpReq), HttpStatus.OK);
         } catch(Exception e) {
@@ -82,7 +82,7 @@ public class UserController {
 
     //회원 정보 변경
     @PutMapping("/{user_idx}")
-    public ResponseEntity updateUser(UserModifyReq userModifyReq, @PathVariable final int user_idx){
+    public ResponseEntity updateUser(@RequestBody UserModifyReq userModifyReq, @PathVariable final int user_idx){
         try {
             return new ResponseEntity(userService.updateUser(userModifyReq,user_idx), HttpStatus.OK);
         } catch(Exception e) {
