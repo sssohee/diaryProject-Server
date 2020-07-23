@@ -16,10 +16,10 @@ public class Message {
     public static final String MODIFY_USER_FAIL = "회원 정보 수정 실패";
     public static final String MODIFY_USER_PASSWORD_SUCCESS = "회원 비밀번호 수정 성공";
     public static final String MODIFY_USER_PASSWORD_FAIL = "회원 비밀번호 수정 실패";
-    
+
     public static final String DELETE_USER_SUCCESS = "회원 탈퇴 성공";
     public static final String DELETE_USER_FAIL = "회원 탈퇴 실패";
-    
+
     public static final String NO_CONTENT = "내용 없음";
 
     public static final String FIND_USER_SUCCESS = "회원 정보 조회 성공";
@@ -56,6 +56,7 @@ public class Message {
 
     public static final String FIND_DIARY_DATE_COUNT_SUCCESS = "일자별 글 개수 조회 성공";
     public static final String FIND_DIARY_DATE_COUNT_FAIL = "일자별 글 개수 조회 실패";
+    
     public static final String FIND_DIARY_SUCCESS = "글 조회 성공";
     public static final String FIND_DIARY_FAIL = "글 조회 실패";
 
