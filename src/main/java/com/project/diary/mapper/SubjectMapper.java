@@ -37,6 +37,6 @@ public interface SubjectMapper {
     void insertTodaySubject(@Param("subject") final String subject);
 
     //오늘의 주제 조회
-    @Select("select * from today_subject order by subject_idx desc limit 1")
+    @Select("select * from today_subject order by date desc limit 1")
     TodaySubject todaySubject();
 }
