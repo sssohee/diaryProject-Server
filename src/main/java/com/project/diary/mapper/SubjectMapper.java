@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface SubjectMapper {
     //주제 등록
-    @Insert("insert into subject values (0,#{subject}")
+    @Insert("insert into subject values (0,#{subject})")
     void insert (@Param("subject") final String subject);
 
     //주제 삭제
@@ -33,7 +33,7 @@ public interface SubjectMapper {
     int findByMaxSubjectIdx ();
 
     //오늘의 주제 등록
-    @Insert("insert into today_subject values (now(),#{subject}")
+    @Insert("insert into today_subject values (now(),#{subject})")
     void insertTodaySubject(@Param("subject") final String subject);
 
     //오늘의 주제 조회
