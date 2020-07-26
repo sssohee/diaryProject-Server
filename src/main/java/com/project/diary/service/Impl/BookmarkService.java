@@ -12,6 +12,10 @@ public class BookmarkService implements BookmarkServiceInter {
 
     private BookmarkMapper bookmarkMapper;
 
+    public BookmarkService(BookmarkMapper bookmarkMapper) {
+        this.bookmarkMapper = bookmarkMapper;
+    }
+
     //북마크 추가
     @Override
     public DefaultResponse bookmarkInsert(int user_idx, int diary_idx) {
