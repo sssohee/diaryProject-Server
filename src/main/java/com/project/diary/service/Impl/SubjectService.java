@@ -21,6 +21,10 @@ public class SubjectService implements SubjectServiceInter {
 
     private SubjectMapper subjectMapper;
 
+    public SubjectService(SubjectMapper subjectMapper) {
+        this.subjectMapper = subjectMapper;
+    }
+
     //주제 등록
     @Override
     public DefaultResponse insertSubject(String subject) {
