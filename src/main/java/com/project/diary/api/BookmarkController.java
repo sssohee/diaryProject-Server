@@ -16,6 +16,10 @@ public class BookmarkController {
 
     private BookmarkServiceInter bookmarkService;
 
+    public BookmarkController(BookmarkServiceInter bookmarkService) {
+        this.bookmarkService = bookmarkService;
+    }
+
     private static final DefaultResponse NO_CONTENT_RES = new DefaultResponse(Status.BAD_REQUEST, Message.NO_CONTENT);
     private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
 
