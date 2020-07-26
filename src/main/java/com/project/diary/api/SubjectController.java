@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.*;
 public class SubjectController {
     private SubjectServiceInter subjectService;
 
+    public SubjectController(SubjectServiceInter subjectService) {
+        this.subjectService = subjectService;
+    }
+
     private static final DefaultResponse NO_CONTENT_RES = new DefaultResponse(Status.BAD_REQUEST, Message.NO_CONTENT);
     private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
 
     //주제 등록
     @PostMapping("")
-    public ResponseEntity insertSubject(@RequestParam final String subject) {
+    public ResponseEntity insertSubject(@RequestBody final String subject) {
         try {
             return new ResponseEntity(subjectService.insertSubject(subject), HttpStatus.OK);
         } catch(Exception e) {
@@ -41,7 +45,7 @@ public class SubjectController {
     }
 
     //주제 리스트
-    @GetMapping("")
+    @GetMapping("/allList")
     public ResponseEntity subjectList(){
         try{
             return new ResponseEntity(subjectService.subjectList(), HttpStatus.OK);
