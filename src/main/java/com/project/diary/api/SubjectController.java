@@ -24,7 +24,7 @@ public class SubjectController {
 
     //주제 등록
     @PostMapping("")
-    public ResponseEntity insertSubject(@RequestBody final String subject) {
+    public ResponseEntity insertSubject(@RequestParam final String subject) {
         try {
             return new ResponseEntity(subjectService.insertSubject(subject), HttpStatus.OK);
         } catch(Exception e) {
