@@ -33,7 +33,7 @@ public class LoginController {
     }
 
     //이메일 찾기
-    @PostMapping("")
+    @PostMapping("/findEmail")
     public ResponseEntity findByUserEmail(@RequestParam final String user_name, @RequestParam final String user_phone) {
         try {
             return new ResponseEntity(loginService.findUserEmail(user_name,user_phone), HttpStatus.OK);
@@ -44,7 +44,7 @@ public class LoginController {
     }
 
     //비밀번호 찾기
-    @PostMapping("")
+    @PostMapping("/findPassword")
     public ResponseEntity findByUserPass(@RequestParam final String user_email, @RequestParam final String user_phone) {
         try {
             return new ResponseEntity(loginService.findUserPassword(user_email,user_phone), HttpStatus.OK);
