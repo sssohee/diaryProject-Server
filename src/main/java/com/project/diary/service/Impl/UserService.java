@@ -16,6 +16,10 @@ import java.util.List;
 public class UserService implements UserServiceInter {
     private UserMapper userMapper;
 
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
     //회원 가입
     @Override
     public DefaultResponse saveUser(SignUpReq signUpReq) {
