@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserServiceInter userService;
 
-    private static final DefaultResponse NO_CONTENT_RES = new DefaultResponse(Status.BAD_REQUEST, Message.NO_CONTENT);
-    private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
-
     public UserController(UserServiceInter userService) {
         this.userService = userService;
     }
+
+    private static final DefaultResponse NO_CONTENT_RES = new DefaultResponse(Status.BAD_REQUEST, Message.NO_CONTENT);
+    private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
 
     //회원 가입
     @PostMapping("")
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     //nickname 중복검사
-    @GetMapping("/check")
+    @GetMapping("/checkNickname")
     public ResponseEntity checkNickname(@RequestParam final String user_nickname){
         try {
             return new ResponseEntity(userService.checkNickName(user_nickname), HttpStatus.OK);
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     //email 중복검사
-    @GetMapping("/check")
+    @GetMapping("/checkEmail")
     public ResponseEntity checkEmail(@RequestParam final String user_email){
         try {
             return new ResponseEntity(userService.checkEmail(user_email), HttpStatus.OK);
@@ -68,7 +68,6 @@ public class UserController {
         }
     }
 
-
     //회원 개인 정보 조회
     @GetMapping("/{user_idx}")
     public ResponseEntity userGetData(@PathVariable final int user_idx){
@@ -81,7 +80,7 @@ public class UserController {
     }
 
     //회원 정보 변경
-    @PutMapping("/{user_idx}")
+    @PutMapping("/modifyUserInfo/{user_idx}")
     public ResponseEntity updateUser(@RequestBody UserModifyReq userModifyReq, @PathVariable final int user_idx){
         try {
             return new ResponseEntity(userService.updateUser(userModifyReq,user_idx), HttpStatus.OK);
@@ -92,8 +91,8 @@ public class UserController {
     }
 
     //회원 비밀번호 변경
-    @PutMapping("")
-    public ResponseEntity updateUserPassword(@RequestParam final String user_password, @RequestParam final int user_idx){
+    @PutMapping("/modifyPassword/{user_idx}")
+    public ResponseEntity updateUserPassword(@RequestParam final String user_password, @PathVariable final int user_idx){
         try {
             return new ResponseEntity(userService.updatePass(user_password,user_idx), HttpStatus.OK);
         } catch(Exception e) {
@@ -103,8 +102,8 @@ public class UserController {
     }
 
     //회원 탈퇴
-    @PutMapping("")
-    public ResponseEntity deleteUser(@RequestParam final int user_idx){
+    @PutMapping("/dropOut/{user_idx}")
+    public ResponseEntity deleteUser(@PathVariable final int user_idx){
         try {
             return new ResponseEntity(userService.deleteUser(user_idx), HttpStatus.OK);
         } catch(Exception e) {
