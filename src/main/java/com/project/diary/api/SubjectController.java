@@ -45,7 +45,7 @@ public class SubjectController {
     }
 
     //주제 리스트
-    @GetMapping("/allList")
+    @GetMapping("")
     public ResponseEntity subjectList(){
         try{
             return new ResponseEntity(subjectService.subjectList(), HttpStatus.OK);
