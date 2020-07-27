@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequestMapping("diary/bookmarks")
+@RequestMapping("diary/bookmarks/{user_idx}/{diary_idx}")
 @RestController
 public class BookmarkController {
 
@@ -25,7 +25,7 @@ public class BookmarkController {
 
     //북마크 저장
     @PostMapping("")
-    public ResponseEntity insert(@RequestParam final int user_idx, @RequestParam final int diary_idx){
+    public ResponseEntity insert(@PathVariable final int user_idx, @PathVariable final int diary_idx){
         try {
             return new ResponseEntity(bookmarkService.bookmarkInsert(user_idx, diary_idx), HttpStatus.OK);
         } catch(Exception e) {
@@ -36,7 +36,7 @@ public class BookmarkController {
 
     //북마크 취소
     @DeleteMapping("")
-    public ResponseEntity delete(@RequestParam final int user_idx, @RequestParam final int diary_idx){
+    public ResponseEntity delete(@PathVariable final int user_idx, @PathVariable final int diary_idx){
         try {
             return new ResponseEntity(bookmarkService.bookmarkDelete(user_idx, diary_idx), HttpStatus.OK);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class BookmarkController {
 
     //북마크 확인
     @GetMapping("")
-    public ResponseEntity check(@RequestParam final int user_idx, @RequestParam final int diary_idx){
+    public ResponseEntity check(@PathVariable final int user_idx, @PathVariable final int diary_idx){
         try {
             return new ResponseEntity(bookmarkService.bookmarkCheck(user_idx, diary_idx), HttpStatus.OK);
         } catch (Exception e){
