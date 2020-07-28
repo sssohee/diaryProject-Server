@@ -93,6 +93,8 @@ public class DiaryService implements DiaryServiceInter {
 
             if(diaryDateList.size()>0)
                 return DefaultResponse.res(Status.OK, Message.FIND_DIARY_DATE_COUNT_SUCCESS,diaryDateList);
+            else if(diaryDateList.size()==0)
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             else
                 return DefaultResponse.res(Status.BAD_REQUEST, Message.FIND_DIARY_DATE_COUNT_FAIL);
         }catch (Exception e){
@@ -104,10 +106,12 @@ public class DiaryService implements DiaryServiceInter {
     @Override
     public DefaultResponse allDiaryList() {
         try{
-            List<Diary> diaryAllList = diaryMapper.allDiaryList();
+            List<Diary> diaryList = diaryMapper.allDiaryList();
 
-            if(diaryAllList!=null)
-                return DefaultResponse.res(Status.OK, Message.FIND_DIARY_SUCCESS,diaryAllList);
+            if(diaryList.size()>0)
+                return DefaultResponse.res(Status.OK, Message.FIND_DIARY_SUCCESS,diaryList);
+            else if(diaryList.size()==0)
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             else
                 return DefaultResponse.res(Status.BAD_REQUEST, Message.FIND_DIARY_FAIL);
         }catch (Exception e){
@@ -119,10 +123,12 @@ public class DiaryService implements DiaryServiceInter {
     @Override
     public DefaultResponse userDiaryList(int user_idx) {
         try{
-            List<Diary> diaryUserList = diaryMapper.userDiaryList(user_idx);
+            List<Diary> diaryList = diaryMapper.userDiaryList(user_idx);
 
-            if(diaryUserList!=null)
-                return DefaultResponse.res(Status.OK, Message.FIND_DIARY_SUCCESS,diaryUserList);
+            if(diaryList.size()>0)
+                return DefaultResponse.res(Status.OK, Message.FIND_DIARY_SUCCESS,diaryList);
+            else if(diaryList.size()==0)
+                return DefaultResponse.res(Status.NO_CONTENT, Message.NO_CONTENT);
             else
                 return DefaultResponse.res(Status.BAD_REQUEST, Message.FIND_DIARY_FAIL);
         }catch (Exception e){
