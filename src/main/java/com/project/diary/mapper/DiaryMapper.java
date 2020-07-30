@@ -11,12 +11,12 @@ import java.util.List;
 @Mapper
 public interface DiaryMapper {
     //게시글 등록
-    @Insert("insert into diary values (0,#{diaryAddReq.user_idx},#{diaryAddReq.diary_subject},#{diaryAddReq.diary_contents},#{diaryAddReq.diary_image},now(),#{diaryAddReq.diary_open},0)")
-    void insert (@Param("diaryAddReq") final DiaryAddReq diaryAddReq);
+    @Insert("insert into diary values (0,#{diaryAddReq.user_idx},#{diaryAddReq.diary_subject},#{diaryAddReq.diary_contents},#{diary_image},now(),#{diaryAddReq.diary_open},0)")
+    void insert (@Param("diaryAddReq") final DiaryAddReq diaryAddReq, @Param("diary_image") final String diary_image);
 
     //게시글 수정
-    @Update("update diary set diary_contents=#{diaryModifyReq.diary_contents},diary_image=#{diaryModifyReq.diary_image},diary_open=#{diaryModifyReq.diary_open} where diary_idx=#{diary_idx}")
-    void update (@Param("diaryModifyReq") final DiaryModifyReq diaryModifyReq, @Param("diary_idx") final int diary_idx);
+    @Update("update diary set diary_contents=#{diaryModifyReq.diary_contents},diary_image=#{diary_image},diary_open=#{diaryModifyReq.diary_open} where diary_idx=#{diaryModifyReq.diary_idx}")
+    void update (@Param("diaryModifyReq") final DiaryModifyReq diaryModifyReq, @Param("diary_image") final String diary_image);
 
     //게시글 삭제 - 회원
     @Delete("delete from diary where diary_idx=#{diary_idx}")
@@ -27,7 +27,7 @@ public interface DiaryMapper {
     void deleteAdmin (@Param("diary_idx") final int diary_idx);
 
     //최신 작성글 조회
-    @Select("select * from diary where user_idx=#{user_idx} order by diary_date desc limit 1")
+    @Select("select * from diary where user_idx=#{user_idx} order by diary_idx desc limit 1")
     Diary userNewDiary (@Param("user_idx") final int user_idx);
 
     //일자별 게시글 개수 확인
