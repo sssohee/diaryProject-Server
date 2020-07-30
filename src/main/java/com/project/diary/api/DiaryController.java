@@ -10,6 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @Slf4j
 @RequestMapping("diary")
@@ -25,10 +31,14 @@ public class DiaryController {
     private static final DefaultResponse INTERNAL_SERVER_ERROR = new DefaultResponse(Status.INTERNAL_SERVER_ERROR,Message.INTERNAL_SERVER_ERROR);
 
     //글 작성
-    @PostMapping("")
-    public ResponseEntity insert (@RequestBody DiaryAddReq diaryAddReq){
+    @PostMapping(value = "", consumes = {"multipart/form-data"})
+    public ResponseEntity insert (DiaryAddReq diaryAddReq, MultipartHttpServletRequest request){
         try{
-            return new ResponseEntity(diaryService.insert(diaryAddReq), HttpStatus.OK);
+            //업로드할 경로구하기
+            String path = request.getSession().getServletContext().getRealPath("");
+            System.out.println("diaryImage path=" + path);
+
+            return new ResponseEntity(diaryService.insert(diaryAddReq, path), HttpStatus.OK);
         } catch (Exception e){
             log.error(e.getMessage());
             return new ResponseEntity(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -36,10 +46,13 @@ public class DiaryController {
     }
 
     //글 수정
-    @PutMapping("{diary_idx}")
-    public ResponseEntity update (@RequestBody DiaryModifyReq diaryModifyReq, @PathVariable final int diary_idx){
+    @PutMapping(value = "", consumes = {"multipart/form-data"})
+    public ResponseEntity update (HttpServletRequest request, DiaryModifyReq diaryModifyReq){
         try {
-            return new ResponseEntity(diaryService.update(diaryModifyReq, diary_idx), HttpStatus.OK);
+            //업로드할 경로구하기
+            String path = request.getSession().getServletContext().getRealPath("/");
+
+            return new ResponseEntity(diaryService.update(diaryModifyReq, path), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -47,9 +60,12 @@ public class DiaryController {
 
     //글 삭제
     @PostMapping("{diary_idx}")
-    public ResponseEntity delete (@PathVariable final int diary_idx, @RequestParam final int user_idx){
+    public ResponseEntity delete (HttpServletRequest request, @PathVariable final int diary_idx, @RequestParam final int user_idx){
         try {
-            return new ResponseEntity(diaryService.delete(diary_idx, user_idx), HttpStatus.OK);
+            //삭제할 경로구하기
+            String path = request.getSession().getServletContext().getRealPath("/");
+
+            return new ResponseEntity(diaryService.delete(diary_idx, user_idx, path), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
