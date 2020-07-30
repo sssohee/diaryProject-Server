@@ -56,6 +56,7 @@ public class Message {
 
     public static final String FIND_DIARY_DATE_COUNT_SUCCESS = "일자별 글 개수 조회 성공";
     public static final String FIND_DIARY_DATE_COUNT_FAIL = "일자별 글 개수 조회 실패";
+
     public static final String FIND_DIARY_SUCCESS = "글 조회 성공";
     public static final String FIND_DIARY_FAIL = "글 조회 실패";
 
