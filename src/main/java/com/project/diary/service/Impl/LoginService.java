@@ -30,6 +30,7 @@ public class LoginService implements LoginServiceInter {
             if (status == 2) {
                 map.put("user_status", "관리자");
                 map.put("user_idx", userMapper.getUserIdx(user_email));
+                map.put("user_email", user_email);
                 return DefaultResponse.res(Status.OK, Message.LOGIN_SUCCESS, map);
             } else if (status == 1) {
                 map.put("user_status", "탈퇴회원");
@@ -37,6 +38,7 @@ public class LoginService implements LoginServiceInter {
             } else if (status == 0) {
                 map.put("user_status", "회원");
                 map.put("user_idx", userMapper.getUserIdx(user_email));
+                map.put("user_email", user_email);
                 return DefaultResponse.res(Status.OK, Message.LOGIN_SUCCESS, map);
             } else
                 return DefaultResponse.res(Status.BAD_REQUEST, Message.LOGIN_FAIL);
